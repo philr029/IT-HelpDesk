@@ -4,30 +4,96 @@ import string
 
 def generate_password():
 
-    length = int(input("Password Length: "))
+    while True:
+        length = int(input("Password Length (8-32): "))
 
-    characters = ""
+        if 8 <= length <= 32:
+            break
+
+        print("❌ Length must be between 8 and 32.")
 
     uppercase = input("Include Uppercase? (Y/N): ").upper()
     numbers = input("Include Numbers? (Y/N): ").upper()
     symbols = input("Include Symbols? (Y/N): ").upper()
 
-    # Always include lowercase
-    characters += string.ascii_lowercase
+    characters = list(string.ascii_lowercase)
+
+    password = []
 
     if uppercase == "Y":
-        characters += string.ascii_uppercase
+        characters.extend(string.ascii_uppercase)
+        password.append(random.choice(string.ascii_uppercase))
 
     if numbers == "Y":
-        characters += string.digits
+        characters.extend(string.digits)
+        password.append(random.choice(string.digits))
 
     if symbols == "Y":
-        characters += string.punctuation
+        characters.extend(string.punctuation)
+        password.append(random.choice(string.punctuation))
 
-    password = ""
+    while len(password) < length:
+        password.append(random.choice(characters))
 
-    for _ in range(length):
-        password += random.choice(characters)
+    random.shuffle(password)
 
-    print("\nGenerated Password:")
+    password = "".join(password)
+
+    print("\n====================")
+    print("Generated Password")
+    print("====================")
     print(password)
+
+    # Strength Checker
+    score = 0
+
+    if length >= 12:
+        score += 1
+
+    if uppercase == "Y":
+        score += 1
+
+    if numbers == "Y":
+        score += 1
+
+    if symbols == "Y":
+        score += 1
+
+    print("\nPassword Strength:")
+
+    if score <= 2:
+        print("⚠️ Weak")
+
+    elif score == 3:
+        print("⚡ Medium")
+
+    else:
+        print("💪 Strong")
+
+
+def password_generator():
+
+    while True:
+
+        print("""
+=========================
+   PASSWORD GENERATOR
+=========================
+1. Generate Password
+2. Return
+""")
+
+        choice = input("Select option: ")
+
+        if choice == "1":
+            generate_password()
+
+        elif choice == "2":
+            break
+
+        else:
+            print("❌ Invalid option")
+
+
+if __name__ == "__main__":
+    password_generator()
