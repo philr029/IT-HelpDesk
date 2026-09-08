@@ -126,3 +126,25 @@ def helpdesk():
 # Run directly
 if __name__ == "__main__":
     helpdesk()
+def search_ticket(tickets):
+
+    keyword = input("\nEnter name or issue: ").lower()
+
+    found = False
+
+    for ticket in tickets:
+        if keyword in ticket["user"].lower() or keyword in ticket["issue"].lower():
+
+            print(f"""
+Ticket ID : {ticket['id']}
+User      : {ticket['user']}
+Issue     : {ticket['issue']}
+Priority  : {ticket['priority']}
+Status    : {ticket['status']}
+-----------------------------
+""")
+
+            found = True
+
+    if not found:
+        print("No matching tickets found.")
