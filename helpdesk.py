@@ -20,6 +20,7 @@ def save_tickets(tickets):
 
 # Create a new ticket
 def create_ticket(tickets):
+
     print("\n--- Create Ticket ---")
 
     user = input("Your Name: ")
@@ -42,6 +43,7 @@ def create_ticket(tickets):
 
 # View all tickets
 def view_tickets(tickets):
+
     print("\n--- All Tickets ---")
 
     if not tickets:
@@ -59,14 +61,48 @@ Status    : {ticket['status']}
 """)
 
 
+# Search tickets
+def search_ticket(tickets):
+
+    keyword = input("\nEnter name or issue to search: ").lower()
+
+    found = False
+
+    for ticket in tickets:
+
+        if (
+            keyword in ticket["user"].lower()
+            or keyword in ticket["issue"].lower()
+        ):
+
+            print(f"""
+Ticket ID : {ticket['id']}
+User      : {ticket['user']}
+Issue     : {ticket['issue']}
+Priority  : {ticket['priority']}
+Status    : {ticket['status']}
+-----------------------------
+""")
+
+            found = True
+
+    if not found:
+        print("❌ No matching tickets found.")
+
+
 # Close a ticket
 def close_ticket(tickets):
+
     ticket_id = input("\nEnter Ticket ID to close: ")
 
     for ticket in tickets:
+
         if str(ticket["id"]) == ticket_id:
+
             ticket["status"] = "Closed"
+
             save_tickets(tickets)
+
             print("✅ Ticket closed.")
             return
 
@@ -75,12 +111,23 @@ def close_ticket(tickets):
 
 # Dashboard
 def dashboard(tickets):
-    open_tickets = sum(1 for t in tickets if t["status"] == "Open")
-    closed_tickets = sum(1 for t in tickets if t["status"] == "Closed")
+
+    open_tickets = sum(
+        1 for t in tickets if t["status"] == "Open"
+    )
+
+    closed_tickets = sum(
+        1 for t in tickets if t["status"] == "Closed"
+    )
+
+    high_priority = sum(
+        1 for t in tickets if t["priority"] == "High"
+    )
 
     print("\n--- Dashboard ---")
     print(f"Open Tickets   : {open_tickets}")
     print(f"Closed Tickets : {closed_tickets}")
+    print(f"High Priority  : {high_priority}")
     print(f"Total Tickets  : {len(tickets)}")
 
 
@@ -97,9 +144,10 @@ def helpdesk():
 =========================
 1. Create Ticket
 2. View Tickets
-3. Close Ticket
-4. Dashboard
-5. Return to Toolkit
+3. Search Tickets
+4. Close Ticket
+5. Dashboard
+6. Exit
 """)
 
         choice = input("Select option: ")
@@ -111,40 +159,23 @@ def helpdesk():
             view_tickets(tickets)
 
         elif choice == "3":
-            close_ticket(tickets)
+            search_ticket(tickets)
 
         elif choice == "4":
-            dashboard(tickets)
+            close_ticket(tickets)
 
         elif choice == "5":
+            dashboard(tickets)
+
+        elif choice == "6":
+            print("Goodbye!")
             break
 
         else:
-            print("Invalid option.")
+            print("❌ Invalid option.")
 
 
 # Run directly
 if __name__ == "__main__":
     helpdesk()
-def search_ticket(tickets):
-
-    keyword = input("\nEnter name or issue: ").lower()
-
-    found = False
-
-    for ticket in tickets:
-        if keyword in ticket["user"].lower() or keyword in ticket["issue"].lower():
-
-            print(f"""
-Ticket ID : {ticket['id']}
-User      : {ticket['user']}
-Issue     : {ticket['issue']}
-Priority  : {ticket['priority']}
-Status    : {ticket['status']}
------------------------------
-""")
-
-            found = True
-
-    if not found:
-        print("No matching tickets found.")
+``
