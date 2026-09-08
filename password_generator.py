@@ -6,11 +6,23 @@ def generate_password():
 
     length = int(input("Password Length: "))
 
-    characters = (
-        string.ascii_letters +
-        string.digits +
-        string.punctuation
-    )
+    characters = ""
+
+    uppercase = input("Include Uppercase? (Y/N): ").upper()
+    numbers = input("Include Numbers? (Y/N): ").upper()
+    symbols = input("Include Symbols? (Y/N): ").upper()
+
+    # Always include lowercase
+    characters += string.ascii_lowercase
+
+    if uppercase == "Y":
+        characters += string.ascii_uppercase
+
+    if numbers == "Y":
+        characters += string.digits
+
+    if symbols == "Y":
+        characters += string.punctuation
 
     password = ""
 
@@ -19,31 +31,3 @@ def generate_password():
 
     print("\nGenerated Password:")
     print(password)
-
-
-def password_generator():
-
-    while True:
-
-        print("""
-=========================
-   PASSWORD GENERATOR
-=========================
-1. Generate Password
-2. Return to Toolkit
-""")
-
-        choice = input("Select option: ")
-
-        if choice == "1":
-            generate_password()
-
-        elif choice == "2":
-            break
-
-        else:
-            print("Invalid option.")
-
-
-if __name__ == "__main__":
-    password_generator()
